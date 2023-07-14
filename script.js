@@ -5,6 +5,8 @@ async function fetchData(cityName) {
   const response = await fetch(url);
   const data = await response.json();
 
+  console.log(data.name);
+
   // For current day and date
   const date = new Date();
   let weekdays = [
@@ -24,7 +26,7 @@ async function fetchData(cityName) {
   };
 
   return {
-    city: data.name, // City name
+    name: data.name, // City name
     day: weekdays[date.getDay()], // Current day
     date: date.toLocaleDateString("en-US", options), // Current date
     condition: data.weather[0].description, // Weather condition
@@ -35,10 +37,9 @@ async function fetchData(cityName) {
     humidity: data.main.humidity, // Humidity
   };
 }
-
-fetchData("Chelmsford")
-  .then((weather) => {
-    console.log(weather);
+fetchData("chelmsford")
+  .then((city) => {
+    console.log(city);
   })
   .catch((error) => {
     console.log(error);
