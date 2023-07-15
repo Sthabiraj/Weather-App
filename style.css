@@ -24,19 +24,22 @@ body {
 }
 .container {
   background: linear-gradient(to bottom, #05969e, #2ff1fc);
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 350px;
+  max-width: 360px;
   width: 100%;
-  gap: 2rem;
+  gap: 1rem;
 }
 .search-section {
   display: flex;
   gap: 0.5rem;
   width: 100%;
+  background-color: var(--white);
+  padding: 5px;
+  border-radius: 20px;
 }
 .search-section input {
   flex: 1;
@@ -44,16 +47,19 @@ body {
 .search-section input,
 button {
   border: none;
-  background-color: var(--white);
+  background-color: transparent;
   padding: 0.5rem 0.8rem;
-  border-radius: 3px;
+}
+input:focus {
+  outline: none;
 }
 .search-section button {
-  background-color: #2ff1fc;
-  color: var(--dark-black);
+  background-color: #2ac1c9;
+  color: white;
   box-shadow: 6px 4px 10px hsla(0, 0%, 0%, 0.123);
   cursor: pointer;
   transition: 0.2s ease background-color;
+  border-radius: 20px;
 }
 button:hover {
   background-color: #2bdfe9;
@@ -79,6 +85,11 @@ button:hover {
 .city-weather h2 {
   font-size: 1.5rem;
   font-weight: 500;
+  text-transform: capitalize;
+}
+.city-weather p {
+  /* font-weight: 300; */
+  margin-bottom: 0.5rem;
 }
 .weather-info {
   display: flex;

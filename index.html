@@ -10,21 +10,20 @@
     <main class="container">
       <!-- Search section -->
       <section class="search-section">
-        <input type="search" id="search-box" placeholder="Search" />
-        <button>Search</button>
+        <input type="search" id="search-box" placeholder="eg. London" />
+        <button id="button" onclick="searchWeather()">Search</button>
       </section>
       <!-- End of Search section -->
 
       <!-- City Weather -->
       <section class="city-weather">
+        <h2><span id="condition"></span></h2>
         <figure>
-          <img
-            src="https://img.icons8.com/?size=512&id=SpZSUswN9tJs&format=png"
-            alt="weather icon"
-          />
+          <img src="" alt="weather icon" id="weather-icon" />
         </figure>
-        <h1>22°C</h1>
-        <h2>New York</h2>
+        <h1><span id="temperature"></span>°C</h1>
+        <p><span id="date"></span>, <span id="day">Friday</span></p>
+        <h2><span id="city-name"></span></h2>
       </section>
       <!-- End of City Weather -->
 
@@ -33,19 +32,19 @@
         <!-- Pressure -->
         <div class="info-item">
           <figure><img src="./icons/pressure.png" alt="info icon" /></figure>
-          <h1>64%</h1>
+          <h1><span id="pressure"></span> Pa</h1>
           <p>Pressure</p>
         </div>
         <!-- Wind speed -->
         <div class="info-item">
           <figure><img src="./icons/wind speed.png" alt="info icon" /></figure>
-          <h1>64%</h1>
+          <h1><span id="wind-speed"></span> m/s</h1>
           <p>Wind speed</p>
         </div>
         <!-- Humidity -->
         <div class="info-item">
           <figure><img src="./icons/humidity.png" alt="info icon" /></figure>
-          <h1>64%</h1>
+          <h1><span id="humidity"></span> %</h1>
           <p>Humidity</p>
         </div>
       </section>
