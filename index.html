@@ -20,7 +20,7 @@
       <!-- End of Search section -->
 
       <!-- City Weather -->
-      <section class="city-weather">
+      <section class="city-weather group">
         <h2><span id="condition"></span></h2>
         <figure>
           <img sr="" alt="weather icon" id="weather-icon" />
@@ -33,9 +33,9 @@
         </h2>
       </section>
       <!-- End of City Weather -->
-      <hr />
+      <hr class="group" />
       <!-- Weather info -->
-      <section class="weather-info">
+      <section class="weather-info group">
         <!-- Pressure -->
         <div class="info-item">
           <figure><img src="./icons/pressure.png" alt="info icon" /></figure>
@@ -46,7 +46,7 @@
         <div class="info-item">
           <figure><img src="./icons/wind speed.png" alt="info icon" /></figure>
           <h1><span id="wind-speed"></span> m/s</h1>
-          <p>Wind speed</p>
+          <p>Wind</p>
         </div>
         <!-- Humidity -->
         <div class="info-item">
@@ -56,6 +56,15 @@
         </div>
       </section>
       <!-- End of weather info -->
+
+      <!-- Error section -->
+      <section class="error hide">
+        <figure>
+          <img src="./icons/error.png" alt="Error icon" />
+        </figure>
+        <p>Invalid city. Please enter a valid city name.</p>
+      </section>
+      <!-- End of Error Section -->
     </main>
     <script src="script.js"></script>
   </body>

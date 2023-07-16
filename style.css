@@ -132,3 +132,30 @@ hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.384);
 }
+.hide {
+  display: none;
+}
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.error figure {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.error figure img {
+  width: 80px;
+}
+.error p {
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  text-align: center;
+  font-weight: 500;
+}
+.error.hide {
+  display: none;
+}
