@@ -15,7 +15,7 @@ html {
   font-weight: 18px;
 }
 body {
-  background: var(--dark-black);
+  background: linear-gradient(160deg, #45a8d4, #09245c);
   height: 100vh;
   width: 100%;
   display: flex;
@@ -23,7 +23,7 @@ body {
   align-items: center;
 }
 .container {
-  background: linear-gradient(to bottom, #05969e, #2ff1fc);
+  background: linear-gradient(to bottom, #14dbf5, #3959d1);
   padding: 2rem;
   border-radius: 15px;
   display: flex;
@@ -31,7 +31,8 @@ body {
   align-items: center;
   max-width: 360px;
   width: 100%;
-  gap: 1rem;
+  gap: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.411);
 }
 .search-section {
   display: flex;
@@ -54,7 +55,7 @@ input:focus {
   outline: none;
 }
 .search-section button {
-  background-color: #2ac1c9;
+  background-color: #15caf4;
   color: white;
   box-shadow: 6px 4px 10px hsla(0, 0%, 0%, 0.123);
   cursor: pointer;
@@ -62,16 +63,18 @@ input:focus {
   border-radius: 20px;
 }
 button:hover {
-  background-color: #2bdfe9;
+  background-color: #3959d1;
 }
 .city-weather {
-  text-align: center;
   color: var(--white);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .city-weather figure {
-  width: 150px;
+  width: 180px;
   height: 150px;
-  margin-bottom: 0.8rem;
 }
 .city-weather figure img {
   height: 100%;
@@ -86,10 +89,11 @@ button:hover {
   font-size: 1.5rem;
   font-weight: 500;
   text-transform: capitalize;
+  color: var(--white);
 }
 .city-weather p {
-  /* font-weight: 300; */
-  margin-bottom: 0.5rem;
+  margin: 0.5rem;
+  font-weight: 300;
 }
 .weather-info {
   display: flex;
@@ -103,11 +107,28 @@ button:hover {
 .weather-info .info-item {
   text-align: center;
 }
+.info-item h1 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.info-item p {
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.808);
+}
 .weather-info figure {
   display: flex;
   justify-content: center;
 }
 .weather-info img {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
+}
+.weather-info figure {
+  margin-bottom: 0.3rem;
+}
+hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.384);
 }

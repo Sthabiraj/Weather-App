@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Forecast App</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
     <main class="container">
@@ -19,14 +23,17 @@
       <section class="city-weather">
         <h2><span id="condition"></span></h2>
         <figure>
-          <img src="" alt="weather icon" id="weather-icon" />
+          <img sr="" alt="weather icon" id="weather-icon" />
         </figure>
         <h1><span id="temperature"></span>°C</h1>
-        <p><span id="date"></span>, <span id="day">Friday</span></p>
-        <h2><span id="city-name"></span></h2>
+        <p><span id="day"></span>, <span id="date"></span></p>
+        <h2>
+          <span class="material-symbols-outlined"> location_on </span>
+          <span id="city-name"></span>
+        </h2>
       </section>
       <!-- End of City Weather -->
-
+      <hr />
       <!-- Weather info -->
       <section class="weather-info">
         <!-- Pressure -->

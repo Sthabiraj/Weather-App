@@ -45,6 +45,27 @@ async function fetchData(cityName = "Chelmsford") {
   document.querySelector("#pressure").innerHTML = weather.pressure;
   document.querySelector("#wind-speed").innerHTML = weather.windSpeed;
   document.querySelector("#humidity").innerHTML = weather.humidity;
+
+  const icon = document.querySelector("#weather-icon");
+  if (weather.condition == "clear sky") {
+    icon.src = "./icons/Clear.svg";
+  } else if (weather.condition == "few clouds") {
+    icon.src = "./icons/few clouds.svg";
+  } else if (weather.condition == "scattered clouds") {
+    icon.src = "./icons/scattered clouds.svg";
+  } else if (weather.condition == "broken clouds") {
+    icon.src = "./icons/broken clouds.svg";
+  } else if (weather.condition == "shower rain") {
+    icon.src = "./icons/shower rain.svg";
+  } else if (weather.condition == "rain") {
+    icon.src = "./icons/rain.svg";
+  } else if (weather.condition == "thunderstorm") {
+    icon.src = "./icons/thunderstorm.svg";
+  } else if (weather.condition == "snow") {
+    icon.src = "./icons/snow.svg";
+  } else if (weather.condition == "mist") {
+    icon.src = "./icons/mist.svg";
+  }
 }
 
 fetchData("Chelmsford");
