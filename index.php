@@ -132,6 +132,31 @@ function insert_update_data($servername, $username, $password, $dbname)
   $conn->close();
 }
 
+function display_data($servername, $username, $password, $dbname)
+{
+  global $city_name;
+
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $dbname);
+  // Check connection
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  $sql = "SELECT * FROM $city_name";
+  $result = $conn->query($sql);
+  if ($result->num_rows > 0) {
+    // output weather data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo $row["Day_of_Week"] . " | " . $row["Day_and_Date"] . " | " . $row["Weather_Condition"] . " | " . $row["Weather_Icon"] . " | " . $row["Temperature"] . " | " . $row["Pressure"] . " | " . $row["Wind_Speed"] . " | " . $row["Humidity"] . "<br><br>";
+    }
+  } else {
+    echo "0 results";
+  }
+
+  $conn->close();
+}
+
 function connect_DB()
 {
   $servername = "localhost";
@@ -147,6 +172,9 @@ function connect_DB()
 
   // Insert data to table
   insert_update_data($servername, $username, $password, $dbname);
+
+  // Display weather data
+  display_data($servername, $username, $password, $dbname);
 }
 
 connect_DB();
