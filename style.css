@@ -73,12 +73,17 @@ button:hover {
   align-items: center;
 }
 .city-weather figure {
-  width: 180px;
+  width: 100%;
   height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .city-weather figure img {
-  height: 100%;
+  height: 100px;
   width: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 .city-weather h1 {
   font-size: 3rem;

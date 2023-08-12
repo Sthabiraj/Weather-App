@@ -41,6 +41,7 @@ async function fetchData(cityName) {
         day: weekdays[currentDate.getDay()], // Current day
         date: currentDate.toLocaleDateString("en-US", options), // Current date
         condition: data.weather[0].description, // Weather condition
+        icon: data.weather[0].icon, // Weather icon
         temp: data.main.temp, // City temperature
         pressure: data.main.pressure, // Pressure
         windSpeed: data.wind.speed, // Wind speed
@@ -58,28 +59,9 @@ async function fetchData(cityName) {
       document.querySelector("#pressure").innerHTML = weather.pressure;
       document.querySelector("#wind-speed").innerHTML = weather.windSpeed;
       document.querySelector("#humidity").innerHTML = weather.humidity;
-
-      // Condition to add weather icon based on condition
-      const icon = document.querySelector("#weather-icon");
-      if (weather.condition == "clear sky") {
-        icon.src = "./icons/Clear.svg";
-      } else if (weather.condition == "few clouds") {
-        icon.src = "./icons/few clouds.svg";
-      } else if (weather.condition == "scattered clouds") {
-        icon.src = "./icons/scattered clouds.svg";
-      } else if (weather.condition == "broken clouds") {
-        icon.src = "./icons/broken clouds.svg";
-      } else if (weather.condition == "shower rain") {
-        icon.src = "./icons/shower rain.svg";
-      } else if (weather.condition == "rain") {
-        icon.src = "./icons/rain.svg";
-      } else if (weather.condition == "thunderstorm") {
-        icon.src = "./icons/thunderstorm.svg";
-      } else if (weather.condition == "snow") {
-        icon.src = "./icons/snow.svg";
-      } else if (weather.condition == "mist") {
-        icon.src = "./icons/mist.svg";
-      }
+      document.querySelector(
+        "#weather-icon"
+      ).src = `./icons/${weather.icon}.svg`;
     }
   } catch (error) {
     // Handle the error
