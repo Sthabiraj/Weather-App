@@ -87,35 +87,46 @@ function create_table($servername, $username, $password, $dbname)
   $conn->close();
 }
 
-function update_data($servername, $username, $password, $dbname)
+function insert_update_data($servername, $username, $password, $dbname)
 {
   global $city_name;
   $conn = new mysqli($servername, $username, $password, $dbname);
-  // Check connection
+
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
 
-  // Accessing each value of tuple
   list($day_of_week, $day_and_date, $weather_condition, $weather_icon, $temperature, $pressure, $wind_speed, $humidity) = fetch_weather_data();
 
-  // sql to insert data to table
-  $sql = "UPDATE $city_name 
-  SET 
-      Day_and_Date = '$day_and_date',
-      Weather_Condition = '$weather_condition',
-      Weather_Icon = '$weather_icon',
-      Temperature = $temperature,
-      Pressure = $pressure,
-      Wind_Speed = $wind_speed,
-      Humidity = $humidity
-  WHERE Day_of_Week = $day_of_week";
+  $sql = "SELECT * FROM $city_name";
+  $result = $conn->query($sql);
 
+  if ($result->num_rows !== 7) {
+    $sql_ = "INSERT INTO $city_name (Day_of_Week, Day_and_Date, Weather_Condition, Weather_Icon, Temperature, Pressure, Wind_Speed, Humidity)
+            VALUES ('$day_of_week', '$day_and_date', '$weather_condition', '$weather_icon', $temperature, $pressure, $wind_speed, $humidity)";
 
-  if ($conn->multi_query($sql) === TRUE) {
-    echo "Records updated successfully<br>";
+    if ($conn->query($sql_) === TRUE) {
+      echo "New record created successfully";
+    } else {
+      echo "Error: " . $sql_ . "<br>" . $conn->error;
+    }
   } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    $sql_ = "UPDATE $city_name 
+            SET 
+                Day_and_Date = '$day_and_date',
+                Weather_Condition = '$weather_condition',
+                Weather_Icon = '$weather_icon',
+                Temperature = $temperature,
+                Pressure = $pressure,
+                Wind_Speed = $wind_speed,
+                Humidity = $humidity
+            WHERE Day_of_Week = '$day_of_week'";
+
+    if ($conn->query($sql_) === TRUE) {
+      echo "Records updated successfully<br>";
+    } else {
+      echo "Error: " . $sql_ . "<br>" . $conn->error;
+    }
   }
 
   $conn->close();
@@ -135,7 +146,7 @@ function connect_DB()
   create_table($servername, $username, $password, $dbname);
 
   // Insert data to table
-  update_data($servername, $username, $password, $dbname);
+  insert_update_data($servername, $username, $password, $dbname);
 }
 
 connect_DB();
