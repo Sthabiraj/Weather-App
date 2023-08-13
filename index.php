@@ -11,6 +11,9 @@ function fetch_weather_data()
 
   // Decodes the JSON data to PHP object
   $response_data = json_decode($json_data);
+  if ($response_data === null || isset($response_data->cod) && $response_data->cod !== 200) {
+    return false; // Return false to indicate an error
+  }
 
   // Check if the API request was successful
   if ($response_data->cod === 200) {
@@ -23,8 +26,6 @@ function fetch_weather_data()
     $wind_speed = $response_data->wind->speed;
     $humidity = $response_data->main->humidity;
 
-    // Construct the complete URL for the icon
-    $icon_url = "https://openweathermap.org/img/w/$weather_icon.png";
     // Return data as tuple
     return [$day_of_week, $day_and_date, $weather_condition, $weather_icon, $temperature, $pressure, $wind_speed, $humidity];
   } else {
@@ -255,7 +256,12 @@ function connect_DB()
         <?php echo $city_name . " Past Weather"; ?>
       </h1>
       <div class="week-container">
-        <?php connect_DB(); ?>
+        <?php
+        try {
+          connect_DB();
+        } catch (Exception $e) {
+          echo "An error occurred: " . $e->getMessage();
+        } ?>
       </div>
     </section>
   </main>
