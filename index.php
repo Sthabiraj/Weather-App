@@ -92,30 +92,29 @@ function insert_update_data($servername, $username, $password, $dbname)
 
   list($day_of_week, $day_and_date, $weather_condition, $weather_icon, $temperature, $pressure, $wind_speed, $humidity) = fetch_weather_data();
 
-  $sql = "SELECT * FROM $city_name";
-  $result = $conn->query($sql);
+  $existing_sql = "SELECT * FROM $city_name WHERE Day_and_Date = '$day_and_date'";
+  $existing_result = $conn->query($existing_sql);
 
-  if ($result->num_rows !== 7) {
-    $sql_ = "INSERT INTO $city_name (Day_of_Week, Day_and_Date, Weather_Condition, Weather_Icon, Temperature, Pressure, Wind_Speed, Humidity)
-            VALUES ('$day_of_week', '$day_and_date', '$weather_condition', '$weather_icon', $temperature, $pressure, $wind_speed, $humidity)";
+  if ($existing_result->num_rows === 0) {
+    $insert_sql = "INSERT INTO $city_name (Day_of_Week, Day_and_Date, Weather_Condition, Weather_Icon, Temperature, Pressure, Wind_Speed, Humidity)
+                  VALUES ('$day_of_week', '$day_and_date', '$weather_condition', '$weather_icon', $temperature, $pressure, $wind_speed, $humidity)";
 
-    if ($conn->query($sql_) !== TRUE) {
-      echo "Error: " . $sql_ . "<br>" . $conn->error;
+    if ($conn->query($insert_sql) !== TRUE) {
+      echo "Error: " . $insert_sql . "<br>" . $conn->error;
     }
   } else {
-    $sql_ = "UPDATE $city_name 
-            SET 
-                Day_and_Date = '$day_and_date',
-                Weather_Condition = '$weather_condition',
-                Weather_Icon = '$weather_icon',
-                Temperature = $temperature,
-                Pressure = $pressure,
-                Wind_Speed = $wind_speed,
-                Humidity = $humidity
-            WHERE Day_of_Week = '$day_of_week'";
+    $update_sql = "UPDATE $city_name 
+                    SET 
+                      Weather_Condition = '$weather_condition',
+                      Weather_Icon = '$weather_icon',
+                      Temperature = $temperature,
+                      Pressure = $pressure,
+                      Wind_Speed = $wind_speed,
+                      Humidity = $humidity
+                    WHERE Day_and_Date = '$day_and_date'";
 
-    if ($conn->query($sql_) !== TRUE) {
-      echo "Error: " . $sql_ . "<br>" . $conn->error;
+    if ($conn->query($update_sql) !== TRUE) {
+      echo "Error: " . $update_sql . "<br>" . $conn->error;
     }
   }
 
