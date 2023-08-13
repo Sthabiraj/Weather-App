@@ -44,11 +44,7 @@ function create_DB($servername, $username, $password, $dbname)
 
   // Create database
   $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
-  if ($conn->query($sql) === TRUE) {
-    echo "Database created successfully<br>";
-    // Select the database
-    $conn->select_db($dbname);
-  } else {
+  if ($conn->query($sql) !== TRUE) {
     echo "Error creating database: " . $conn->error;
   }
 
@@ -73,14 +69,12 @@ function create_table($servername, $username, $password, $dbname)
     Weather_Condition VARCHAR(50),
     Weather_Icon VARCHAR(100),
     Temperature INT(5),
-    Pressure DECIMAL(6, 2),
+    Pressure INT(6),
     Wind_Speed DECIMAL(5, 2),
-    Humidity DECIMAL(5, 2)
+    Humidity INT(5)
   )";
 
-  if ($conn->query($sql) === TRUE) {
-    echo "Table MyGuests created successfully<br>";
-  } else {
+  if ($conn->query($sql) !== TRUE) {
     echo "Error creating table: " . $conn->error;
   }
 
@@ -105,9 +99,7 @@ function insert_update_data($servername, $username, $password, $dbname)
     $sql_ = "INSERT INTO $city_name (Day_of_Week, Day_and_Date, Weather_Condition, Weather_Icon, Temperature, Pressure, Wind_Speed, Humidity)
             VALUES ('$day_of_week', '$day_and_date', '$weather_condition', '$weather_icon', $temperature, $pressure, $wind_speed, $humidity)";
 
-    if ($conn->query($sql_) === TRUE) {
-      echo "New record created successfully";
-    } else {
+    if ($conn->query($sql_) !== TRUE) {
       echo "Error: " . $sql_ . "<br>" . $conn->error;
     }
   } else {
@@ -122,9 +114,7 @@ function insert_update_data($servername, $username, $password, $dbname)
                 Humidity = $humidity
             WHERE Day_of_Week = '$day_of_week'";
 
-    if ($conn->query($sql_) === TRUE) {
-      echo "Records updated successfully<br>";
-    } else {
+    if ($conn->query($sql_) !== TRUE) {
       echo "Error: " . $sql_ . "<br>" . $conn->error;
     }
   }
@@ -148,7 +138,15 @@ function display_data($servername, $username, $password, $dbname)
   if ($result->num_rows > 0) {
     // output weather data of each row
     while ($row = $result->fetch_assoc()) {
-      echo $row["Day_of_Week"] . " | " . $row["Day_and_Date"] . " | " . $row["Weather_Condition"] . " | " . $row["Weather_Icon"] . " | " . $row["Temperature"] . " | " . $row["Pressure"] . " | " . $row["Wind_Speed"] . " | " . $row["Humidity"] . "<br><br>";
+      echo '<div class="week-box">
+              <p>' . date("D", strtotime($row["Day_of_Week"])) . '</p>
+              <figure><img src="./icons/' . $row["Weather_Icon"] . '.svg" alt="weather-icon" /></figure>
+              <p>' . $row["Temperature"] . '°C</p>
+              <p>' . $row["Pressure"] . ' Pa</p>
+              <p>' . $row["Wind_Speed"] . ' m/s</p>
+              <p>' . $row["Humidity"] . ' %</p>
+            </div>
+            <hr>';
     }
   } else {
     echo "0 results";
@@ -176,6 +174,90 @@ function connect_DB()
   // Display weather data
   display_data($servername, $username, $password, $dbname);
 }
-
-connect_DB();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Forecast App</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+  <main class="container">
+    <section class="left">
+      <!-- Search section -->
+      <section class="search-section">
+        <input type="search" id="search-box" placeholder="eg. London" />
+        <button id="button" onclick="searchWeather()">Search</button>
+      </section>
+      <!-- End of Search section -->
+
+      <!-- City Weather -->
+      <section class="city-weather group">
+        <h2><span id="condition"></span></h2>
+        <figure>
+          <img alt="weather icon" id="weather-icon" />
+        </figure>
+        <h1><span id="temperature"></span>°C</h1>
+        <p><span id="day"></span>, <span id="date"></span></p>
+        <h2>
+          <span class="material-symbols-outlined"> location_on </span>
+          <span id="city-name"></span>
+        </h2>
+      </section>
+      <!-- End of City Weather -->
+      <hr class="group" />
+      <!-- Weather info -->
+      <section class="weather-info group">
+        <!-- Pressure -->
+        <div class="info-item">
+          <figure><img src="./icons/pressure.png" alt="info icon" /></figure>
+          <h1><span id="pressure"></span> Pa</h1>
+          <p>Pressure</p>
+        </div>
+        <!-- Wind speed -->
+        <div class="info-item">
+          <figure>
+            <img src="./icons/wind speed.png" alt="info icon" />
+          </figure>
+          <h1><span id="wind-speed"></span> m/s</h1>
+          <p>Wind Speed</p>
+        </div>
+        <!-- Humidity -->
+        <div class="info-item">
+          <figure><img src="./icons/humidity.png" alt="info icon" /></figure>
+          <h1><span id="humidity"></span> %</h1>
+          <p>Humidity</p>
+        </div>
+      </section>
+      <!-- End of weather info -->
+
+      <!-- Error section -->
+      <section class="error hide">
+        <figure>
+          <img src="./icons/error.png" alt="Error icon" />
+        </figure>
+        <p>Invalid city. Please enter a valid city name.</p>
+      </section>
+      <!-- End of Error Section -->
+    </section>
+
+    <section class="right">
+      <h1>
+        <?php echo $city_name . " Past Weather"; ?>
+      </h1>
+      <div class="week-container">
+        <?php connect_DB(); ?>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+
+</html>
