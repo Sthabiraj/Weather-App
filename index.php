@@ -138,12 +138,15 @@ function display_data($servername, $username, $password, $dbname)
     // output weather data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<div class="week-box">
-              <p>' . date("D", strtotime($row["Day_of_Week"])) . '</p>
-              <figure><img src="./icons/' . $row["Weather_Icon"] . '.svg" alt="weather-icon" /></figure>
-              <p>' . $row["Temperature"] . '°C</p>
-              <p>' . $row["Pressure"] . ' Pa</p>
-              <p>' . $row["Wind_Speed"] . ' m/s</p>
-              <p>' . $row["Humidity"] . ' %</p>
+              <div class="date">' . $row["Day_and_Date"] . '</div>
+              <div class="db-info">
+                <p>' . date("D", strtotime($row["Day_of_Week"])) . '</p>
+                <figure><img src="./icons/' . $row["Weather_Icon"] . '.svg" alt="weather-icon" /></figure>
+                <p>' . $row["Temperature"] . '°C</p>
+                <p>' . $row["Pressure"] . ' Pa</p>
+                <p>' . $row["Wind_Speed"] . ' m/s</p>
+                <p>' . $row["Humidity"] . ' %</p>
+              </div>
             </div>
             <hr>';
     }
