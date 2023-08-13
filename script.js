@@ -84,3 +84,10 @@ function searchWeather() {
   fetchData(city.value);
   city.value = "";
 }
+
+// Event listener for the "Enter" key press on the input element
+city.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    searchWeather();
+  }
+});
