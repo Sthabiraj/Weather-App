@@ -133,7 +133,7 @@ function display_data($servername, $username, $password, $dbname)
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "SELECT * FROM $city_name";
+  $sql = "SELECT * FROM $city_name ORDER BY id ASC";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {
     // output weather data of each row
@@ -160,10 +160,10 @@ function display_data($servername, $username, $password, $dbname)
 
 function connect_DB()
 {
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "City_Weather";
+  $servername = "sql303.byetcluster.com";
+  $username = "if0_34843479";
+  $password = "4SEp5z8WdiW";
+  $dbname = "if0_34843479_city_weather";
 
   // Create database
   create_DB($servername, $username, $password, $dbname);
@@ -186,6 +186,7 @@ function connect_DB()
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Forecast App</title>
+  <link rel="icon" href="icons/weather-icon.png" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
