@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Forecast App</title>
+    <link rel="icon" href="icons/weather-icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+  </head>
+
+  <body>
+    <main class="container">
+      <section class="left">
+        <!-- Search section -->
+        <section class="search-section">
+          <input type="search" id="search-box" placeholder="eg. London" />
+          <button id="button" onclick="searchWeather()">Search</button>
+        </section>
+        <!-- End of Search section -->
+
+        <!-- City Weather -->
+        <section class="city-weather group">
+          <h2><span id="condition"></span></h2>
+          <figure>
+            <img alt="weather icon" id="weather-icon" />
+          </figure>
+          <h1><span id="temperature"></span>°C</h1>
+          <p><span id="day"></span>, <span id="date"></span></p>
+          <h2>
+            <span class="material-symbols-outlined"> location_on </span>
+            <span id="city-name"></span>
+          </h2>
+        </section>
+        <!-- End of City Weather -->
+        <hr class="group" />
+        <!-- Weather info -->
+        <section class="weather-info group">
+          <!-- Pressure -->
+          <div class="info-item">
+            <figure><img src="./icons/pressure.png" alt="info icon" /></figure>
+            <h1><span id="pressure"></span> Pa</h1>
+            <p>Pressure</p>
+          </div>
+          <!-- Wind speed -->
+          <div class="info-item">
+            <figure>
+              <img src="./icons/wind speed.png" alt="info icon" />
+            </figure>
+            <h1><span id="wind-speed"></span> m/s</h1>
+            <p>Wind Speed</p>
+          </div>
+          <!-- Humidity -->
+          <div class="info-item">
+            <figure><img src="./icons/humidity.png" alt="info icon" /></figure>
+            <h1><span id="humidity"></span> %</h1>
+            <p>Humidity</p>
+          </div>
+        </section>
+        <!-- End of weather info -->
+
+        <!-- Error section -->
+        <section class="error hide">
+          <figure>
+            <img src="./icons/error.png" alt="Error icon" />
+          </figure>
+          <p>Invalid city. Please enter a valid city name.</p>
+        </section>
+        <!-- End of Error Section -->
+      </section>
+
+      <section class="right">
+        <h1></h1>
+        <div class="week-container"></div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

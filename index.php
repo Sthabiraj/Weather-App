@@ -1,23 +1,32 @@
 <?php
+//Specify this file is a api
+header('Content-Type: application/json');
+
+// Set the city name for weather data
 $city_name = "Chelmsford";
+
+// Function to fetch weather data from the OpenWeatherMap API
 function fetch_weather_data()
 {
   global $city_name; // Make the $city_name variable accessible within the function
   $api_key = "b9042ec5d9a26c6e11c152ed3cf8ec90";
   $url = "https://api.openweathermap.org/data/2.5/weather?q=$city_name&appid=$api_key&units=metric";
 
-  // Reads the JSON file
+  // Retrieve JSON data from the API
   $json_data = file_get_contents($url);
 
-  // Decodes the JSON data to PHP object
+  // Decode the JSON data into a PHP object
   $response_data = json_decode($json_data);
+
+  // Check for errors in the API response
   if ($response_data === null || isset($response_data->cod) && $response_data->cod !== 200) {
     return false; // Return false to indicate an error
   }
 
   // Check if the API request was successful
   if ($response_data->cod === 200) {
-    $day_of_week = date('l');
+    // Extract relevant weather information
+    $day_of_week = date('D');
     $day_and_date = date('M j, Y');
     $weather_condition = $response_data->weather[0]->description;
     $weather_icon = $response_data->weather[0]->icon;
@@ -26,13 +35,14 @@ function fetch_weather_data()
     $wind_speed = $response_data->wind->speed;
     $humidity = $response_data->main->humidity;
 
-    // Return data as tuple
+    // Return data as an array
     return [$day_of_week, $day_and_date, $weather_condition, $weather_icon, $temperature, $pressure, $wind_speed, $humidity];
   } else {
     echo "Error: Unable to fetch weather data.";
   }
 }
 
+// Function to create a database if it doesn't exist
 function create_DB($servername, $username, $password, $dbname)
 {
   // Create connection
@@ -52,6 +62,7 @@ function create_DB($servername, $username, $password, $dbname)
   $conn->close();
 }
 
+// Function to create a table if it doesn't exist
 function create_table($servername, $username, $password, $dbname)
 {
   global $city_name; // Make the $city_name variable accessible within the function
@@ -82,6 +93,7 @@ function create_table($servername, $username, $password, $dbname)
   $conn->close();
 }
 
+// Function to insert or update weather data in the database
 function insert_update_data($servername, $username, $password, $dbname)
 {
   global $city_name;
@@ -123,6 +135,7 @@ function insert_update_data($servername, $username, $password, $dbname)
   $conn->close();
 }
 
+// Function to display weather data from the database
 function display_data($servername, $username, $password, $dbname)
 {
   global $city_name;
@@ -137,21 +150,12 @@ function display_data($servername, $username, $password, $dbname)
   $sql = "SELECT * FROM $city_name ORDER BY id ASC";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {
+    $all_data = array();
     // output weather data of each row
     while ($row = $result->fetch_assoc()) {
-      echo '<div class="week-box">
-              <div class="date">' . $row["Day_and_Date"] . '</div>
-              <div class="db-info">
-                <p>' . date("D", strtotime($row["Day_of_Week"])) . '</p>
-                <figure><img src="./icons/' . $row["Weather_Icon"] . '.svg" alt="weather-icon" /></figure>
-                <p>' . $row["Temperature"] . '°C</p>
-                <p>' . $row["Pressure"] . ' Pa</p>
-                <p>' . $row["Wind_Speed"] . ' m/s</p>
-                <p>' . $row["Humidity"] . ' %</p>
-              </div>
-            </div>
-            <hr>';
+      array_push($all_data, $row);
     }
+    return json_encode($all_data);
   } else {
     echo "0 results";
   }
@@ -159,6 +163,7 @@ function display_data($servername, $username, $password, $dbname)
   $conn->close();
 }
 
+// Function to connect to the database, create table, insert/update data, and display data
 function connect_DB()
 {
   $servername = "localhost";
@@ -176,98 +181,9 @@ function connect_DB()
   insert_update_data($servername, $username, $password, $dbname);
 
   // Display weather data
-  display_data($servername, $username, $password, $dbname);
+  $json_data = display_data($servername, $username, $password, $dbname);
+
+  return $json_data;
 }
+echo connect_DB(); // Print the weather data by calling the connect_DB function
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather Forecast App</title>
-  <link rel="icon" href="icons/weather-icon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-</head>
-
-<body>
-  <main class="container">
-    <section class="left">
-      <!-- Search section -->
-      <section class="search-section">
-        <input type="search" id="search-box" placeholder="eg. London" />
-        <button id="button" onclick="searchWeather()">Search</button>
-      </section>
-      <!-- End of Search section -->
-
-      <!-- City Weather -->
-      <section class="city-weather group">
-        <h2><span id="condition"></span></h2>
-        <figure>
-          <img alt="weather icon" id="weather-icon" />
-        </figure>
-        <h1><span id="temperature"></span>°C</h1>
-        <p><span id="day"></span>, <span id="date"></span></p>
-        <h2>
-          <span class="material-symbols-outlined"> location_on </span>
-          <span id="city-name"></span>
-        </h2>
-      </section>
-      <!-- End of City Weather -->
-      <hr class="group" />
-      <!-- Weather info -->
-      <section class="weather-info group">
-        <!-- Pressure -->
-        <div class="info-item">
-          <figure><img src="./icons/pressure.png" alt="info icon" /></figure>
-          <h1><span id="pressure"></span> Pa</h1>
-          <p>Pressure</p>
-        </div>
-        <!-- Wind speed -->
-        <div class="info-item">
-          <figure>
-            <img src="./icons/wind speed.png" alt="info icon" />
-          </figure>
-          <h1><span id="wind-speed"></span> m/s</h1>
-          <p>Wind Speed</p>
-        </div>
-        <!-- Humidity -->
-        <div class="info-item">
-          <figure><img src="./icons/humidity.png" alt="info icon" /></figure>
-          <h1><span id="humidity"></span> %</h1>
-          <p>Humidity</p>
-        </div>
-      </section>
-      <!-- End of weather info -->
-
-      <!-- Error section -->
-      <section class="error hide">
-        <figure>
-          <img src="./icons/error.png" alt="Error icon" />
-        </figure>
-        <p>Invalid city. Please enter a valid city name.</p>
-      </section>
-      <!-- End of Error Section -->
-    </section>
-
-    <section class="right">
-      <h1>
-        <?php echo $city_name . " Past Weather"; ?>
-      </h1>
-      <div class="week-container">
-        <?php
-        try {
-          connect_DB();
-        } catch (Exception $e) {
-          echo "An error occurred: " . $e->getMessage();
-        } ?>
-      </div>
-    </section>
-  </main>
-  <script src="script.js"></script>
-</body>
-
-</html>
