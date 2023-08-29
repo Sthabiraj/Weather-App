@@ -93,7 +93,7 @@ function insert_update_data($servername, $username, $password, $dbname)
 
   list($day_of_week, $day_and_date, $weather_condition, $weather_icon, $temperature, $pressure, $wind_speed, $humidity) = fetch_weather_data();
 
-  $existing_sql = "SELECT * FROM $city_name WHERE Day_and_Date = '$day_and_date'";
+  $existing_sql = "SELECT * FROM $city_name WHERE Day_of_Week = '$day_of_week'";
   $existing_result = $conn->query($existing_sql);
 
   if ($existing_result->num_rows === 0) {
@@ -105,14 +105,15 @@ function insert_update_data($servername, $username, $password, $dbname)
     }
   } else {
     $update_sql = "UPDATE $city_name 
-                    SET 
-                      Weather_Condition = '$weather_condition',
-                      Weather_Icon = '$weather_icon',
-                      Temperature = $temperature,
-                      Pressure = $pressure,
-                      Wind_Speed = $wind_speed,
-                      Humidity = $humidity
-                    WHERE Day_and_Date = '$day_and_date'";
+              SET 
+                Weather_Condition = '$weather_condition',
+                Weather_Icon = '$weather_icon',
+                Temperature = $temperature,
+                Pressure = $pressure,
+                Wind_Speed = $wind_speed,
+                Humidity = $humidity,
+                Day_and_Date = '$day_and_date'
+              WHERE Day_of_Week = '$day_of_week'";
 
     if ($conn->query($update_sql) !== TRUE) {
       echo "Error: " . $update_sql . "<br>" . $conn->error;
@@ -160,10 +161,10 @@ function display_data($servername, $username, $password, $dbname)
 
 function connect_DB()
 {
-  $servername = "sql303.byetcluster.com";
-  $username = "if0_34843479";
-  $password = "4SEp5z8WdiW";
-  $dbname = "if0_34843479_city_weather";
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "city_weather";
 
   // Create database
   create_DB($servername, $username, $password, $dbname);
