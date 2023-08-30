@@ -1,6 +1,20 @@
 const error = document.querySelector(".error");
+const offline = document.querySelector(".offline");
 const group = document.querySelectorAll(".group");
+const weekContainer = document.querySelector(".week-container");
 const cityName = "Chelmsford";
+
+function populateWeatherData(weather) {
+  document.querySelector("#condition").innerHTML = weather.condition;
+  document.querySelector("#temperature").innerHTML = Math.round(weather.temp);
+  document.querySelector("#date").innerHTML = weather.date;
+  document.querySelector("#day").innerHTML = weather.day;
+  document.querySelector("#city-name").innerHTML = weather.name;
+  document.querySelector("#pressure").innerHTML = weather.pressure;
+  document.querySelector("#wind-speed").innerHTML = weather.windSpeed;
+  document.querySelector("#humidity").innerHTML = weather.humidity;
+  document.querySelector("#weather-icon").src = `./icons/${weather.icon}.svg`;
+}
 
 async function fetchData(cityName) {
   try {
@@ -50,19 +64,9 @@ async function fetchData(cityName) {
       };
 
       // Adding the data to the html using DOM
-      document.querySelector("#condition").innerHTML = weather.condition;
-      document.querySelector("#temperature").innerHTML = Math.round(
-        weather.temp
-      );
-      document.querySelector("#date").innerHTML = weather.date;
-      document.querySelector("#day").innerHTML = weather.day;
-      document.querySelector("#city-name").innerHTML = weather.name;
-      document.querySelector("#pressure").innerHTML = weather.pressure;
-      document.querySelector("#wind-speed").innerHTML = weather.windSpeed;
-      document.querySelector("#humidity").innerHTML = weather.humidity;
-      document.querySelector(
-        "#weather-icon"
-      ).src = `./icons/${weather.icon}.svg`;
+      populateWeatherData(weather);
+
+      localStorage.setItem("defaultWeatherData", JSON.stringify(weather));
     }
   } catch (error) {
     // Handle the error
@@ -79,7 +83,12 @@ async function fetchData(cityName) {
 // For default location weather
 fetchData(cityName);
 
-// For weather based on location
+const cachedWeatherData = localStorage.getItem("defaultWeatherData");
+if (cachedWeatherData) {
+  const weather = JSON.parse(cachedWeatherData);
+  populateWeatherData(weather);
+}
+
 const city = document.querySelector("#search-box");
 function searchWeather() {
   fetchData(city.value);
@@ -98,9 +107,6 @@ async function pastWeatherData() {
   try {
     // Heading
     document.querySelector(".right h1").innerText = `${cityName} Past Weather`;
-
-    let weekContainer = document.querySelector(".week-container");
-
     // Fetching past weather data from php
     let url = `http://localhost/weather-app/pastWeatherAPI.php`;
     let response = await fetch(url);
@@ -129,10 +135,23 @@ async function pastWeatherData() {
 
       // Set the innerHTML of the weekContainer
       weekContainer.innerHTML = weekBoxHTML;
+
+      savePastData();
     }
   } catch (error) {
     console.error(error);
   }
 }
 
+// Call pastWeatherData
 pastWeatherData();
+
+function savePastData() {
+  localStorage.setItem("data", weekContainer.innerHTML);
+}
+
+function showPastData() {
+  weekContainer.innerHTML = localStorage.getItem("data");
+}
+
+showPastData();
