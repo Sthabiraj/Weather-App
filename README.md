@@ -10,7 +10,6 @@ This is a solution to the Weather App on ISA assessment.
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
 - [Author](#author)
 
 ## Overview
